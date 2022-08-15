@@ -21,7 +21,7 @@ export interface IList {
   /**
    * All items created inside list
    */
-  todoItems: any;
+  todoItems: any ;
   /**
    * Users the owner shares list with
    */
@@ -37,7 +37,7 @@ export default function (app: Application): Model<IList> {
   return constructModel<IList>(app, 'lists', {
     owner: { type: Types.ObjectId, lowercase: true, required: true},
     listName: { type: String, required: true },
-    todoItems: { type: Types.Map<Types.ObjectId>},
-    sharedTo: { type: Types.Map<Types.ObjectId>}
+    todoItems: { type: [Types.ObjectId]},
+    sharedTo: { type: [Types.ObjectId]}
   });
 }

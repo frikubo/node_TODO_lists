@@ -1,21 +1,30 @@
-import { Id, NullableId, Params } from '@feathersjs/feathers';
+import { NullableId, Params } from '@feathersjs/feathers';
 import { Service, MongooseServiceOptions } from 'feathers-mongoose';
 
 import { Application } from '../../declarations';
 
+/**
+ * Service for users and authentication interaction
+ * TODO - some roles for access requests
+ */
 export class Users extends Service {
   //eslint-disable-next-line @typescript-eslint/no-unused-vars
   constructor(options: Partial<MongooseServiceOptions>, app: Application) {
     super(options);
   }
 
+  /**
+   * Patch for password modifications of specific user
+   * @param id 
+   * @param data 
+   * @param params 
+   * @returns 
+   */
   async patch(id: NullableId, data: Partial<any>, params?: Params | undefined) {
-    id = params?.user?._id;
+    // internal service call
+    if(params)
+      id = params?.user?._id;
+    // only passwword change allowed
     return super.patch(id, {password: data.password}, params);
-  }
-
-  async update(id: Id, data: any, params?: Params | undefined) {
-    id = params?.user?._id;
-    return super.update(id, data, params);
   }
 }

@@ -33,6 +33,7 @@ app.use(express.json());
 // Support Forms, otherwise req.body undefined
 app.use(express.urlencoded({ extended: true }));
 
+// favicon support
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 
 // Host the public folder

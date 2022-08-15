@@ -18,6 +18,14 @@ export interface IUser {
    * User´s password
    */
   password: string | object;
+  /**
+   * Owner´s lists
+   */
+  ownerLists: any;
+  /**
+   *  foreigh lists shared to user
+   */
+  sharedLists: any;
 }
 
 /**
@@ -28,6 +36,8 @@ export interface IUser {
 export default function (app: Application): Model<IUser> {
   return constructModel<IUser>(app, 'users', {
     email: { type: String, unique: true, lowercase: true, required: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    ownerLists: { type: [Types.ObjectId], ref:'lists'},
+    sharedLists: { type: [Types.ObjectId], ref:'lists'}
   });
 }
