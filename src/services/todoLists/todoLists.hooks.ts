@@ -9,7 +9,13 @@ const { protect } = local.hooks
 
 export default {
   before: {
-    all: [ authenticate('jwt'),],
+    all: [ 
+      authenticate('jwt'),
+      setField({
+        from: 'params.user._id',
+        as: 'params.query.owner'
+      })
+    ],
     get: [],
     find: [],
     create: [],
