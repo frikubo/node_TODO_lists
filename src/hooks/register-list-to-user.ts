@@ -13,8 +13,7 @@ export default (_options = {}): Hook => {
        */
       await context.app.service('users')._patch(context.params?.user?._id, 
         {
-          ownerLists : !(context.params?.user as IUser).ownerLists ? 
-            [context.result._id] : [...(context.params?.user as IUser).ownerLists, context.result._id]
+          ownerLists : !(context.params?.user as IUser).ownerLists ? [context.result._id] : [...(context.params?.user as IUser).ownerLists, context.result._id]
         } as Partial<IUser>)
     }
     return context;

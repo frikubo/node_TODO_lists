@@ -1,11 +1,12 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 import { Hook, HookContext } from '@feathersjs/feathers';
+import { IList } from '../models/lists.model';
 import { IUser } from '../models/users.model';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 /**
- * Unregister all pointers to lists in users documents
+ * Unregister all pointers to lists in users documents and all items included in list
  */
 export default (options = {}): Hook => {
   return async (context: HookContext): Promise<HookContext> => {
@@ -31,7 +32,12 @@ export default (options = {}): Hook => {
       .splice((context.params.user as IUser).ownerLists.findIndex(checker), 1);
     context.app.service('users')._patch(context.params.user?._id, context.params.user)
 
-    //TODO clean items
+    if((context.result as IList).todoItems) {
+      // clean items
+      (context.result as IList).todoItems.forEach( (item:any) => {
+        context.app.service('lists-items').remove(item._id)
+      });
+    }
     return context;
   };
 };

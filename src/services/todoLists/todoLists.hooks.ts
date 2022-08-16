@@ -41,7 +41,7 @@ export default {
 
   after: {
     all: [
-      protect('todoItems', 'createdAt', '__v'),
+      protect('createdAt', '__v'),
     ],
     find: [],
     get: [
@@ -59,13 +59,13 @@ export default {
               nameAs: 'subscribers',
               parentField: 'sharedTo',
               childField: '_id'
-            }/*,
+            },
             {
             service: 'users',
             nameAs: 'items',
             parentField: 'todoItems',
             childField: '_id'
-            }*/
+            }
           ]
         }
       }),

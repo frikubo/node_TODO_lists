@@ -8,9 +8,8 @@ export default (options = {}): Hook => {
   return async (context: HookContext): Promise<HookContext> => {
     context.app.service('lists')._patch(context.result.list._id,
       {
-        todoItems : !(context.result?.list as IList).sharedTo ? 
-          [context.result?._id] : 
-          [...(context.result?.list as IList).sharedTo, context.result?._id]
+        todoItems : !(context.result?.list as IList).todoItems ? 
+          [context.result?._id] : [...(context.result?.list as IList).todoItems, context.result?._id]
       } as Partial<IList>
       )
     return context;

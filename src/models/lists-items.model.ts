@@ -26,6 +26,11 @@ export interface IListItem {
    * Deadline
    */
   deadline: EpochTimeStamp | object;
+
+  /**
+   * State of item
+   */
+  state: (string & 'active' | 'completed' | 'cancelled') | object
   /**
    * Creator of item
    */
@@ -43,6 +48,7 @@ export default function (app: Application): Model<IListItem> {
     title: { type: String, required: true},
     text: { type: String, required: true },
     deadline: { type: Types.Decimal128, required: true },
+    state: { type: String, lowercase: true },
     user: { type: Types.ObjectId, ref:'users' }
   });
 }
