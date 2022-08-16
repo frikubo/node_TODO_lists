@@ -1,4 +1,4 @@
-import { NullableId, Params } from '@feathersjs/feathers';
+import { NullableId, Paginated, Params } from '@feathersjs/feathers';
 import { Service, MongooseServiceOptions } from 'feathers-mongoose';
 
 import { Application } from '../../declarations';

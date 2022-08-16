@@ -1,9 +1,15 @@
 import * as local from '@feathersjs/authentication-local';
 import authenticate from '@feathersjs/authentication/lib/hooks/authenticate';
-import { disallow, populate, setField } from 'feathers-hooks-common';
+import { disallow, populate, setField, unless } from 'feathers-hooks-common';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const { hashPassword, protect } = local.hooks;
+
+const protectExternalGet =         
+  setField({
+    from: 'params.user._id',
+    as: 'params.query._id'
+  })
 /**
  * hooks for users service
  */
@@ -12,17 +18,19 @@ export default {
     all: [],
     find: [ 
       authenticate('jwt'),
-      setField({
-        from: 'params.user._id',
-        as: 'params.query._id'
-      })
+      unless(
+        hook => !hook.params.hasOwnProperty('provider') ||
+                 hook.params.hasOwnProperty('_populate'),
+        protectExternalGet
+      )
      ],
     get: [ 
       authenticate('jwt'),
-      setField({
-        from: 'params.user._id',
-        as: 'params.query._id'
-      }) 
+      unless(
+        hook => !hook.params.hasOwnProperty('provider') ||
+                 hook.params.hasOwnProperty('_populate'),
+        protectExternalGet
+      )
     ],
     create: [ hashPassword('password') ],
     update: [ disallow('external') ],
@@ -65,8 +73,12 @@ export default {
             }
           ]
         }
-      }),   
-      protect('ownerLists', 'sharedLists')
+      }),
+      unless(
+        hook => !hook.params.hasOwnProperty('provider') ||
+                 hook.params.hasOwnProperty('_populate'),
+        protect('ownerLists', 'sharedLists')
+      )
     ],
     get: [ protect('ownerLists', 'sharedLists', 'updatedAt') ], // authentication request call
     create: [ protect('ownerLists', 'sharedLists', 'updatedAt') ] ,

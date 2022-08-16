@@ -1,7 +1,9 @@
 import * as local from '@feathersjs/authentication-local';
 import * as authentication from '@feathersjs/authentication';
 import registerListToUser from '../../hooks/register-list-to-user';
-import { disallow, populate, setField } from 'feathers-hooks-common';
+import { disallow, populate, setField, unless } from 'feathers-hooks-common';
+import safeListDelete from '../../hooks/safe-list-delete';
+import cleanAfterListDelete from '../../hooks/clean-after-list-delete';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const { authenticate } = authentication.hooks;
@@ -21,32 +23,69 @@ export default {
   before: {
     all: [],
     get: [],
-    find: [ authenticate('jwt'), limitToUser ],
+    find: [
+      authenticate('jwt'),
+      // when populating then no limit by user
+      unless(
+        hook => hook.params.hasOwnProperty('_populate'),
+        // if external call then limit data to authenticated user
+        limitToUser,
+        protect('owner')
+      )
+    ],
     create: [ authenticate('jwt'), registerUserAsOwner ],
-    update: [ disallow() ],
-    patch: [ authenticate('jwt') ],
-    remove: [ authenticate('jwt') ]
+    update: [ disallow('external') ],
+    patch: [ disallow('external') ],
+    remove: [ authenticate('jwt'), safeListDelete() ]
   },
 
   after: {
     all: [
-      protect('todoItems', 'sharedTo', 'createdAt', '__v'),
+      protect('todoItems', 'createdAt', '__v'),
     ],
     find: [],
-    get: [],
+    get: [
+      populate({ 
+        schema: {  
+          include: [
+            {
+            service: 'users',
+            nameAs: 'owner',
+            parentField: 'owner',
+            childField: '_id'
+            },
+            {
+              service: 'users',
+              nameAs: 'subscribers',
+              parentField: 'sharedTo',
+              childField: '_id'
+            }/*,
+            {
+            service: 'users',
+            nameAs: 'items',
+            parentField: 'todoItems',
+            childField: '_id'
+            }*/
+          ]
+        }
+      }),
+    ],
     create: [registerListToUser()],
     update: [ ],
     patch: [],
-    remove: []
-  },
-
-  error: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
+    remove: [
+      populate({ 
+        schema: {  
+          include: {
+            service: 'users',
+            nameAs: 'subscribers',
+            parentField: 'sharedTo',
+            childField: '_id'
+          }
+        }
+      }), 
+      cleanAfterListDelete(),
+      protect('_id', 'sharedTo', '_include', 'subscribers')
+    ]
   }
 };
