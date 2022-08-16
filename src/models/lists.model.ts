@@ -1,4 +1,4 @@
-// todoLists-model.ts - A mongoose model
+// lists-model.ts - A mongoose model
 //
 // See http://mongoosejs.com/docs/models.html
 import { Application } from '../declarations';
@@ -7,7 +7,7 @@ import constructModel from './model';
 import { Model, Types } from 'mongoose';
 
 /**
- * Interface for User document structure
+ * Interface for list document structure
  */
 export interface IList {
   /**
