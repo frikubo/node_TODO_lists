@@ -4,6 +4,9 @@ import { Hook, HookContext } from '@feathersjs/feathers';
 import { IUser } from '../models/users.model';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+/**
+ * Register list to owner
+ */
 export default (_options = {}): Hook => {
   return async (context: HookContext): Promise<HookContext> => {
     if(context.result) {
@@ -13,8 +16,8 @@ export default (_options = {}): Hook => {
        */
       await context.app.service('users')._patch(context.params?.user?._id, 
         {
-          ownerLists : !(context.params?.user as IUser).ownerLists ? [context.result._id] : [...(context.params?.user as IUser).ownerLists, context.result._id]
-        } as Partial<IUser>)
+          $addToSet: { ownerLists: context.result._id }
+        } as Partial<IUser>).catch((err:any) => console.log(err))
     }
     return context;
   };

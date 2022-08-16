@@ -19,7 +19,8 @@ declare module '../../declarations' {
  */
 export default function (app: Application): void {
   const options = {
-    Model: createModel(app)
+    Model: createModel(app),
+    multi: [ 'patch', 'remove' ]
   };
 
   // Initialize our service with any options it requires

@@ -13,10 +13,10 @@ export default (options = {}): Hook => {
     const checker = 
       (item: { _id: string; }) => item._id.toString() === context.id
 
-    // only owner can delete list
+    // only owner can modify list
     if((context.params.user as IUser).ownerLists.some(checker)) {
         return context;
     }
-    throw new Error('Only owner can delete list document!')
+    throw new Error('Only owner can modify list document!')
   };
 };

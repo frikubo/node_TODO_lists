@@ -77,7 +77,7 @@ export default {
       unless(
         hook => !hook.params.hasOwnProperty('provider') ||
                  hook.params.hasOwnProperty('_populate'),
-        protect('ownerLists', 'sharedLists')
+        protect('ownerLists', 'sharedLists', 'todoItems')
       )
     ],
     get: [ protect('ownerLists', 'sharedLists', 'updatedAt') ], // authentication request call

@@ -8,36 +8,26 @@ import { IUser } from '../models/users.model';
 /**
  * Unregister all pointers to lists in users documents and all items included in list
  */
-export default (options = {}): Hook => {
+export default (_options = {}): Hook => {
   return async (context: HookContext): Promise<HookContext> => {
     // extraction of _id param
     const checker = 
       (item: { _id: string; }) => item._id.toString() === context.result._id
 
-    // subscribers
-    if(context.result.subscribers) {
-      let subs = context.result.subscribers.array ? context.result.subscribers.array :
-        [context.result.subscribers];
-      // clean subscribed users
-      subs.forEach(
-        (user : { _id: { toString: () => any; }; }) => {
-          (user as unknown as IUser).sharedLists
-            .splice((user as unknown as IUser).sharedLists.findIndex(checker), 1);
-          context.app.service('users')._patch(user._id, user)
-        });
-    }
+    context.app.service('users')._patch(context.result.owner, {
+      $pullAll: { ownerLists: [context.result._id] },
+    }).catch((err:any) => console.log(err))
 
-    // owner clean
-    (context.params.user as IUser).ownerLists
-      .splice((context.params.user as IUser).ownerLists.findIndex(checker), 1);
-    context.app.service('users')._patch(context.params.user?._id, context.params.user)
+    context.app.service('users')._patch(null, {
+      $pullAll: { sharedLists: [context.result._id] } 
+    }, { 
+      query: { _id : { $in: context.result.sharedTo} }
+    }).catch((err:any) => console.log(err))
 
-    if((context.result as IList).todoItems) {
-      // clean items
-      (context.result as IList).todoItems.forEach( (item:any) => {
-        context.app.service('lists-items').remove(item._id)
-      });
-    }
+    context.app.service('lists-items').remove(null, 
+      { query: { _id : { $in: (context.result as IList).todoItems }}
+    }).catch((err:any) => console.log(err))
+
     return context;
   };
 };

@@ -3,9 +3,7 @@ import * as authentication from '@feathersjs/authentication';
 import { populate, setField, unless } from 'feathers-hooks-common';
 import registerItemToList from '../../hooks/register-item-to-list';
 import canUserModifyList from '../../hooks/can-user-modify-list';
-import { errors } from '@feathersjs/errors';
-import { MongooseError } from 'mongoose';
-import { Hook, HookContext } from '@feathersjs/feathers';
+import { HookContext } from '@feathersjs/feathers';
 import { IListItem } from '../../models/lists-items.model';
 // Don't remove this comment. It's needed to format import lines nicely.
 
@@ -20,7 +18,6 @@ const registerUserAsCreator = setField({
 export default {
   before: {
     all: [
-      authenticate('jwt')
     ],
     find: [
       unless(
@@ -37,6 +34,7 @@ export default {
       )
     ],
     create: [
+      authenticate('jwt'),
       canUserModifyList(), 
       registerUserAsCreator,
       // default status init
@@ -46,7 +44,12 @@ export default {
     ],
     update: [],
     patch: [
+      authenticate('jwt'),
       canUserModifyList(),
+      unless(
+        hook => hook.id ? true : false,
+        () => { throw new Error('No external calls allowed!') }
+      )
     ],
     remove: [
       unless(
