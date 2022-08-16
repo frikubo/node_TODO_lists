@@ -39,7 +39,7 @@ export interface IListItem {
  */
 export default function (app: Application): Model<IListItem> {
   return constructModel<IListItem>(app, 'listsItems', {
-    parentList : { type: Types.ObjectId, lowercase: true, ref:'lists' },
+    parentList : { type: Types.ObjectId, lowercase: true, required:true, ref:'lists' },
     title: { type: String, required: true},
     text: { type: String, required: true },
     deadline: { type: Types.Decimal128, required: true },
