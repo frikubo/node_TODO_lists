@@ -7,21 +7,25 @@ import { disallow, populate, setField } from 'feathers-hooks-common';
 const { authenticate } = authentication.hooks;
 const { protect } = local.hooks
 
+const limitToUser = setField({
+  from: 'params.user._id',
+  as: 'params.query.owner'
+});
+
+const registerUserAsOwner = setField({
+  from: 'params.user._id',
+  as: 'data.owner'
+})
+
 export default {
   before: {
-    all: [ 
-      authenticate('jwt'),
-      setField({
-        from: 'params.user._id',
-        as: 'params.query.owner'
-      })
-    ],
+    all: [],
     get: [],
-    find: [],
-    create: [],
+    find: [ authenticate('jwt'), limitToUser ],
+    create: [ authenticate('jwt'), registerUserAsOwner ],
     update: [ disallow() ],
-    patch: [],
-    remove: []
+    patch: [ authenticate('jwt') ],
+    remove: [ authenticate('jwt') ]
   },
 
   after: {

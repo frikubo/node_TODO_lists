@@ -35,7 +35,7 @@ export interface IList {
  */
 export default function (app: Application): Model<IList> {
   return constructModel<IList>(app, 'lists', {
-    owner: { type: Types.ObjectId, lowercase: true, required: true},
+    owner: { type: Types.ObjectId, lowercase: true, required: true, index: true },
     listName: { type: String, required: true },
     todoItems: { type: [Types.ObjectId]},
     sharedTo: { type: [Types.ObjectId]}

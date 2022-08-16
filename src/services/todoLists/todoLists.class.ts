@@ -10,15 +10,4 @@ export class TodoLists extends Service {
     super(options);
     this.app = app;
   }
-
-  /**
-   * Filled with owner id
-   * @param data 
-   * @param params 
-   * @returns 
-   */
-  async create(data: Partial<any> | Partial<any>[], params?: Params | undefined) {
-    (data as Partial<IList>).owner = params?.user?._id
-    return super.create(data, params)
-  }
 }
