@@ -1,5 +1,5 @@
 {
-  "mongodb": "mongodb+srv://frickar:JsHofnZOQxPlwp41@dbfree.epnm5.mongodb.net/DBFree?retryWrites=true&w=majority",
+  "mongodb": "",
   "host": "localhost",
   "port": 3030,
   "public": "../public/",
