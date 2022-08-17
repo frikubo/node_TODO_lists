@@ -17,6 +17,6 @@ export default (options = {}): Hook => {
     if((context.params.user as IUser).ownerLists.some(checker)) {
         return context;
     }
-    throw new Error('Only owner can modify list document!')
+    throw new Error('Only owner can delete list document!')
   };
 };

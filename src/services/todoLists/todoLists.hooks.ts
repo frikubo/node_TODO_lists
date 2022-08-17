@@ -55,7 +55,6 @@ export default {
         delete (hook.data as any).todoItems
         delete (hook.data as any).sharedTo
         delete (hook.data as any).owner
-        console.log(hook.data)
       }
     ],
     remove: [ 

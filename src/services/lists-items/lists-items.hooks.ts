@@ -53,7 +53,6 @@ export default {
       (hook:HookContext)=> {
         delete (hook.data as any).user
         delete (hook.data as any).parentList
-        console.log(hook.data)
       }
     ],
     remove: [

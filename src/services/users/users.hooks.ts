@@ -1,5 +1,6 @@
 import * as local from '@feathersjs/authentication-local';
 import authenticate from '@feathersjs/authentication/lib/hooks/authenticate';
+import { HookContext } from '@feathersjs/feathers';
 import { disallow, populate, setField, unless } from 'feathers-hooks-common';
 // Don't remove this comment. It's needed to format import lines nicely.
 
@@ -40,7 +41,12 @@ export default {
       setField({
         from: 'params.user._id',
         as: 'id'
-      })
+      }),
+      (hook:HookContext)=> {
+        delete (hook.data as any).email
+        delete (hook.data as any).ownerLists
+        delete (hook.data as any).sharedLists
+      }
     ],
     remove: [ disallow('external') ]
   },
