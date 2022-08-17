@@ -8,7 +8,7 @@ This project uses [Feathers](http://feathersjs.com).
 
 ## Getting Started
 
-0. Register own mongoDB connection string 'mongodb' in config/default.json
+0. Register own mongoDB connection string 'mongodb' in ./config/default.json
 
 1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
 2. Install your dependencies
@@ -29,7 +29,7 @@ This project uses [Feathers](http://feathersjs.com).
 Simply run `npm test` and all your tests in the `test/` directory will be run.
 
 
-
 ## Help
 
+API documentation -> ./docs
 For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
