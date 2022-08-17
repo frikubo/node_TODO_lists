@@ -25,6 +25,6 @@ export default (_options = {}): Hook => {
     if((context.params.user as IUser).sharedLists) {
       if((context.params.user as IUser).sharedLists.findIndex(checker) != -1) return context
     }
-    throw new Error('No permission for modifying current list!')
+    throw new Error('No permission for modifying items in current list!')
   };
 };

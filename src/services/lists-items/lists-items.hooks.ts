@@ -2,7 +2,7 @@ import * as local from '@feathersjs/authentication-local';
 import * as authentication from '@feathersjs/authentication';
 import { populate, setField, unless } from 'feathers-hooks-common';
 import registerItemToList from '../../hooks/register-item-to-list';
-import canUserModifyList from '../../hooks/can-user-modify-list';
+import canUserModifyList from '../../hooks/can-user-modify-list-item';
 import { HookContext } from '@feathersjs/feathers';
 import { IListItem } from '../../models/lists-items.model';
 // Don't remove this comment. It's needed to format import lines nicely.

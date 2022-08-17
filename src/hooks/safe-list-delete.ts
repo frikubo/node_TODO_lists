@@ -5,7 +5,7 @@ import { IUser } from '../models/users.model';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 /**
- * Only owner or subscriber can modify list
+ * Only owner can delete his list
  */
 export default (options = {}): Hook => {
   return async (context: HookContext): Promise<HookContext> => {
@@ -17,10 +17,6 @@ export default (options = {}): Hook => {
     if((context.params.user as IUser).ownerLists.some(checker)) {
         return context;
     }
-
-    if((context.params.user as IUser).sharedLists.some(checker)) {
-      return context;
-  }
     throw new Error('Only owner can modify list document!')
   };
 };

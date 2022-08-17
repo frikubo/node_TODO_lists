@@ -2,9 +2,10 @@ import * as local from '@feathersjs/authentication-local';
 import * as authentication from '@feathersjs/authentication';
 import registerListToUser from '../../hooks/register-list-to-user';
 import { disallow, iff, populate, setField, unless } from 'feathers-hooks-common';
-import safeListModify from '../../hooks/safe-list-modify';
+import safeListDelete from '../../hooks/safe-list-delete';
 import cleanAfterListDelete from '../../hooks/clean-after-list-delete';
 import subscribeUsers from '../../hooks/subscribe-users';
+import safeListModify from '../../hooks/safe-list-modify'
 import { IUser } from '../../models/users.model';
 // Don't remove this comment. It's needed to format import lines nicely.
 
@@ -50,7 +51,7 @@ export default {
       subscribeUsers()],
     remove: [ 
       authenticate('jwt'), 
-      safeListModify() 
+      safeListDelete() 
     ]
   },
 

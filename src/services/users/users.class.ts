@@ -25,6 +25,7 @@ export class Users extends Service {
     if(params)
       id = params?.user?._id;
     // only passwword change allowed
+    console.log(data.password)
     return super.patch(id, {password: data.password}, params);
   }
 }

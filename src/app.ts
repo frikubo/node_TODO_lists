@@ -7,6 +7,7 @@ import feathers from '@feathersjs/feathers';
 import configuration from '@feathersjs/configuration';
 import express from '@feathersjs/express';
 import socketio from '@feathersjs/socketio';
+import swagger from 'feathers-swagger'
 
 
 import { Application } from './declarations';
@@ -43,6 +44,8 @@ app.use('/', express.static(app.get('public')));
 app.configure(express.rest());
 
 //app.configure(socketio());
+
+app.configure(swagger(app.get('swagger')))
 
 app.configure(mongoose);
 
