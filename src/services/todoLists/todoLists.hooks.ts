@@ -7,6 +7,8 @@ import cleanAfterListDelete from '../../hooks/clean-after-list-delete';
 import subscribeUsers from '../../hooks/subscribe-users';
 import safeListModify from '../../hooks/safe-list-modify'
 import { IUser } from '../../models/users.model';
+import { HookContext } from '@feathersjs/feathers';
+import { IListItem } from '../../models/lists-items.model';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const { authenticate } = authentication.hooks;
@@ -48,7 +50,14 @@ export default {
     patch: [
       authenticate('jwt'), 
       safeListModify(), 
-      subscribeUsers()],
+      subscribeUsers(),
+      (hook:HookContext)=> {
+        delete (hook.data as any).todoItems
+        delete (hook.data as any).sharedTo
+        delete (hook.data as any).owner
+        console.log(hook.data)
+      }
+    ],
     remove: [ 
       authenticate('jwt'), 
       safeListDelete() 
