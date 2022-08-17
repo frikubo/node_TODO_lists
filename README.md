@@ -31,5 +31,5 @@ Simply run `npm test` and all your tests in the `test/` directory will be run.
 
 ## Help
 
-API documentation -> ./docs
+API documentation -> ./docs <br />
 For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
