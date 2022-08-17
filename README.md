@@ -4,6 +4,7 @@
 
 ## About
 
+REST API for TODO lists management. <br />
 This project uses [Feathers](http://feathersjs.com).
 
 ## Getting Started
